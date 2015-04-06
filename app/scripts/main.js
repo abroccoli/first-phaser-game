@@ -1,6 +1,6 @@
 'use strict';
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'final_project', { preload: preload, create: create, render: render, update: update });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'final_project', { preload: preload, create: create, render: render, update: update });
 
 function preload(){
   game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 16, 15, 24, 18, 5.8);
@@ -19,14 +19,16 @@ function create(){
   platforms.enableBody = true;
 
   ground = game.add.tileSprite( 0, game.world.height - 50, game.world.width, 0, 'platform');
-  ground.enableBody = true;
+  ground.physicsType = Phaser.SPRITE;
+  platforms.add(ground);
 
   sprite1 = game.add.sprite(100, 96, 'hero');
   sprite1.scale.x = 2;
   sprite1.scale.y = 2;
 
-
-  game.physics.arcade.enable(sprite1);
+  game.physics.arcade.enable([sprite1, platforms, ground]);
+  ground.body.immovable = true;
+  ground.body.allowGravity = false;
 
   sprite1.body.gravity.y = 400;
   sprite1.body.collideWorldBounds = true;
@@ -44,11 +46,7 @@ function render(){
 }
 
 function update(){
-  game.physics.arcade.collide(sprite1, platforms, ground);
-
-  sprite1.anchor.setTo(.5,.5);
-  sprite1.body.velocity.x = 0;
-
+  game.physics.arcade.collide(sprite1, platforms);
   controls();
 }
 
@@ -81,6 +79,9 @@ var Character = {
 };
 
 var controls = function(){
+  sprite1.anchor.setTo(.5,.5);
+  sprite1.body.velocity.x = 0;
+
   if (cursors.right.isDown){
     sprite1.body.velocity.x = 150;
     Character.movement.runRight();
