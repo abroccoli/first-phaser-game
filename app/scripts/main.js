@@ -3,7 +3,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'final_project', { preload: preload, create: create, render: render, update: update });
 
 function preload(){
-  game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 17, 15, -1, 18, 5);
+  game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 16, 15, 24, 18, 5.8);
   game.load.image('platform', 'images/winter_ground/ground2.png');
 }
 
