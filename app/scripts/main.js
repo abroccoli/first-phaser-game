@@ -11,7 +11,7 @@ function preload(){
   game.load.image('wallLeft', 'images/winter_ground/ground4.png');
 }
 
-var sprite1, sprite2, cursors, platforms, ground, attackkey, fireballs, midwallLeft, midwallRight, leftFloat, leftCenterFloat, leftUpperFloat, midwallTop, rightFloat, rightCenterFloat, rightUpperFloat;
+var sprite1, sprite2, platforms, ground, fireballs, midwallLeft, midwallRight, leftFloat, leftCenterFloat, leftUpperFloat, midwallTop, rightFloat, rightCenterFloat, rightUpperFloat;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -61,7 +61,7 @@ var Character = {
     sprite2.animations.add('up', [7], 10, true);
     sprite2.animations.add('down', [9], 10, true);
     sprite2.animations.add('attack', [12], 10, true);
-    sprite2.flipped = true;
+    sprite2.flipped = false;
   },
 
   movement: {
@@ -172,8 +172,16 @@ var World = {
 };
 
 var controls = function(){
-  cursors = game.input.keyboard.createCursorKeys();
-  attackkey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  var cursors = game.input.keyboard.createCursorKeys();
+  var attackkey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+  var wasd = {
+    up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+    left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+    right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+    down: game.input.keyboard.addKey(Phaser.Keyboard.S)
+  }
+  var attackkey2 = game.input.keyboard.addKey(Phaser.Keyboard.TAB)
 
   sprite1.anchor.setTo(0.5,0.5);
   sprite1.body.velocity.x = 0;
@@ -200,5 +208,26 @@ var controls = function(){
   }
   if(attackkey.isDown){
     Character.movement.attack(sprite1);
+  }
+
+  if (wasd.right.isDown){
+    sprite2.body.velocity.x = 150;
+    Character.movement.runRight(sprite2);
+  }else if(wasd.left.isDown){
+    sprite2.body.velocity.x = -150;
+    Character.movement.runLeft(sprite2);
+  }else{
+    sprite2.animations.stop();
+  }
+  if(wasd.up.isDown && sprite2.body.velocity.y === 0){
+    sprite2.body.velocity.y = -400;
+  }
+  if(sprite2.body.velocity.y < 0){
+    Character.movement.jump(sprite2);
+  }else if(sprite2.body.velocity.y > 0){
+    Character.movement.fall(sprite2);
+  }
+  if(attackkey.isDown){
+    Character.movement.attack(sprite2);
   }
 };
