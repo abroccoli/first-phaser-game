@@ -78,20 +78,16 @@ var Character = {
       sprite1.animations.play('down');
     },
     attack: function(){
-      for (var i = 1; i <= fireballs.children.length; i++){
-        fireballs.children[i-1].body.velocity.x = 400;
-      }
+      var fireball;
       if (sprite1.flipped === true){
-        fireballs.create(sprite1.body.x + sprite1.body.width / 2, sprite1.body.y + sprite1.body.height / 2, 'fire');
-        for (var i = 1; i <= fireballs.children.length; i++){
-        fireballs.children[i-1].body.velocity.x = -400;
-        }
+        fireball = fireballs.create(sprite1.body.x + sprite1.body.width / 2 - 20, sprite1.body.y + sprite1.body.height / 2, 'fire');
+        fireball.scale.x *= -1;
+        fireball.body.velocity.x = -400;
       } else{
-        fireballs.create(sprite1.body.x + sprite1.body.width / 2, sprite1.body.y + sprite1.body.height / 2, 'fire');
-        for (var i = 1; i <= fireballs.children.length; i++){
-        fireballs.children[i-1].body.velocity.x = 400;
-        }
+        fireball = fireballs.create(sprite1.body.x + sprite1.body.width / 2 + 10, sprite1.body.y + sprite1.body.height / 2, 'fire');
+        fireball.body.velocity.x = 400;
       }
+      fireball.outOfBoundsKill = true;
     }
   }
 };
