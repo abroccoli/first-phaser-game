@@ -117,62 +117,45 @@ var World = {
 
     this.build();
 
+    for(var i=0; i<=platforms.length - 1; i++){
+      platforms.children[i].body.immovable = true;
+      platforms.children[i].body.allowGravity = false;
+    }
+
     game.physics.arcade.enable([platforms, ground]);
   },
   build: function(){
     ground = game.add.tileSprite( -20, game.world.height - 50, game.world.width + 20, 0, 'platform');
     platforms.add(ground);
-    ground.body.immovable = true;
-    ground.body.allowGravity = false;
 
     midwallLeft = game.add.tileSprite(game.world.width/2 - 50, game.world.height-300, 50, game.world.height/2, 'wallLeft');
     platforms.add(midwallLeft);
-    midwallLeft.body.immovable = true;
-    midwallLeft.body.allowGravity = false;
 
     midwallRight = game.add.tileSprite(game.world.width/2 + 25, game.world.height-300, 50, game.world.height/2, 'wallLeft');
     platforms.add(midwallRight);
-    midwallRight.body.immovable = true;
-    midwallRight.body.allowGravity = false;
     midwallRight.anchor.setTo(0.5,0);
     midwallRight.scale.x *= -1;
 
     midwallTop = game.add.tileSprite(game.world.width/2 - 50 ,game.world.height/2,98,20,'floatplatform');
     platforms.add(midwallTop);
-    midwallTop.body.immovable = true;
-    midwallTop.body.allowGravity = false;
 
     leftFloat = game.add.tileSprite(-15,game.world.height/1.5,128,20,'floatplatform');
     platforms.add(leftFloat);
-    leftFloat.body.immovable = true;
-    leftFloat.body.allowGravity = false;
 
     leftCenterFloat = game.add.tileSprite(150,game.world.height/2,128,20,'floatplatform');
     platforms.add(leftCenterFloat);
-    leftCenterFloat.body.immovable = true;
-    leftCenterFloat.body.allowGravity = false;
 
-    leftUpperFloat = game.add.tileSprite(0,game.world.height/3,128,20,'floatplatform');
+    leftUpperFloat = game.add.tileSprite(-15,game.world.height/3,128,20,'floatplatform');
     platforms.add(leftUpperFloat);
-    leftUpperFloat.body.immovable = true;
-    leftUpperFloat.body.allowGravity = false;
 
     rightFloat = game.add.tileSprite(game.world.width - 128,game.world.height/1.5,128,20,'floatplatform');
     platforms.add(rightFloat);
-    rightFloat.body.immovable = true;
-    rightFloat.body.allowGravity = false;
 
     rightCenterFloat = game.add.tileSprite(game.world.width - 278,game.world.height/2,128,20,'floatplatform');
     platforms.add(rightCenterFloat);
-    rightCenterFloat.body.immovable = true;
-    rightCenterFloat.body.allowGravity = false;
 
     rightUpperFloat = game.add.tileSprite(game.world.width - 128,game.world.height/3,128,20,'floatplatform');
     platforms.add(rightUpperFloat);
-    rightUpperFloat.body.immovable = true;
-    rightUpperFloat.body.allowGravity = false;
-
-
   }
 };
 
