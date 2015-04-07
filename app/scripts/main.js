@@ -6,10 +6,11 @@ function preload(){
   game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 16, 15, 24, 18, 5.8);
   game.load.spritesheet('fire', 'images/rsz_fireballs_transparent.png', 30, 16, -1, 0, 0);
   game.load.image('platform', 'images/winter_ground/ground2.png');
+  game.load.image('floatplatform', 'images/winter_ground/ground0.png');
   game.load.image('wallLeft', 'images/winter_ground/ground4.png');
 }
 
-var sprite1, cursors, platforms, ground, attackkey, fireballs, midwallLeft, midwallRight;
+var sprite1, cursors, platforms, ground, attackkey, fireballs, midwallLeft, midwallRight, leftFloat;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -135,6 +136,11 @@ var World = {
     midwallRight.body.allowGravity = false;
     midwallRight.anchor.setTo(0.5,0);
     midwallRight.scale.x *= -1;
+
+    leftFloat = game.add.tileSprite(0,game.world.height/1.5,100,20,'floatplatform');
+    platforms.add(leftFloat);
+    leftFloat.body.immovable = true;
+    leftFloat.body.allowGravity = false;
   }
 };
 
@@ -155,7 +161,7 @@ var controls = function(){
     sprite1.animations.stop();
   }
   if(cursors.up.isDown && sprite1.body.velocity.y === 0){
-    sprite1.body.velocity.y = -300;
+    sprite1.body.velocity.y = -400;
   }
   if(sprite1.body.velocity.y < 0){
     Character.movement.jump();
