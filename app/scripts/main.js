@@ -4,13 +4,14 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'final_project', { preload: p
 
 function preload(){
   game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 16, 15, 24, 18, 5.8);
+  game.load.spritesheet('hero2', 'images/YeOldyNecroGuy2.png', 16, 15, 24, 18, 5.8);
   game.load.spritesheet('fire', 'images/rsz_fireballs_transparent.png', 30, 16, -1, 0, 0);
   game.load.image('platform', 'images/winter_ground/ground2.png');
   game.load.image('floatplatform', 'images/winter_ground/ground0.png');
   game.load.image('wallLeft', 'images/winter_ground/ground4.png');
 }
 
-var sprite1, cursors, platforms, ground, attackkey, fireballs, midwallLeft, midwallRight, leftFloat, leftCenterFloat, leftUpperFloat, midwallTop, rightFloat, rightCenterFloat, rightUpperFloat;
+var sprite1, sprite2, cursors, platforms, ground, attackkey, fireballs, midwallLeft, midwallRight, leftFloat, leftCenterFloat, leftUpperFloat, midwallTop, rightFloat, rightCenterFloat, rightUpperFloat;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -28,12 +29,12 @@ function render(){
 
 function update(){
   game.world.wrap(sprite1, 0, true, true, false);
-  if(fireballs.length > 0){
-    game.physics.arcade.collide(sprite1, platforms);
-    game.physics.arcade.collide(platforms, fireballs);
-  }else{
-    game.physics.arcade.collide(sprite1, platforms);
-  }
+  game.world.wrap(sprite2, 0, true, true, false);
+
+  game.physics.arcade.collide(sprite1, platforms);
+  game.physics.arcade.collide(sprite2, platforms);
+  game.physics.arcade.collide(platforms, fireballs);
+
   controls();
   Fireballs.listen();
 }
@@ -50,33 +51,44 @@ var Character = {
     sprite1.animations.add('down', [9], 10, true);
     sprite1.animations.add('attack', [12], 10, true);
     sprite1.flipped = false;
+
+    sprite2 = game.add.sprite(900, 530, 'hero2');
+    sprite2.scale.x = 2;
+    sprite2.scale.y = 2;
+    game.physics.arcade.enable(sprite2);
+    sprite2.body.gravity.y = 500;
+    sprite2.animations.add('right', [6,8,9], 10, true);
+    sprite2.animations.add('up', [7], 10, true);
+    sprite2.animations.add('down', [9], 10, true);
+    sprite2.animations.add('attack', [12], 10, true);
+    sprite2.flipped = true;
   },
 
   movement: {
-    runRight: function(){
-      if (sprite1.flipped === true){
-        sprite1.scale.x *= -1;
-        sprite1.flipped = false;
+    runRight: function(sprite){
+      if (sprite.flipped === true){
+        sprite.scale.x *= -1;
+        sprite.flipped = false;
       }
-      sprite1.animations.play('right');
+      sprite.animations.play('right');
     },
 
-    runLeft: function(){
-      if (sprite1.flipped === false){
-        sprite1.scale.x *= -1;
-        sprite1.flipped = true;
+    runLeft: function(sprite){
+      if (sprite.flipped === false){
+        sprite.scale.x *= -1;
+        sprite.flipped = true;
       }
-      sprite1.animations.play('right');
+      sprite.animations.play('right');
     },
 
-    jump: function(){
-      sprite1.animations.play('up');
+    jump: function(sprite){
+      sprite.animations.play('up');
     },
 
-    fall: function(){
-      sprite1.animations.play('down');
+    fall: function(sprite){
+      sprite.animations.play('down');
     },
-    attack: function(){
+    attack: function(sprite){
       Fireballs.create();
     }
   }
@@ -166,12 +178,15 @@ var controls = function(){
   sprite1.anchor.setTo(0.5,0.5);
   sprite1.body.velocity.x = 0;
 
+  sprite2.anchor.setTo(0.5,0.5);
+  sprite2.body.velocity.x = 0;
+
   if (cursors.right.isDown){
     sprite1.body.velocity.x = 150;
-    Character.movement.runRight();
+    Character.movement.runRight(sprite1);
   }else if(cursors.left.isDown){
     sprite1.body.velocity.x = -150;
-    Character.movement.runLeft();
+    Character.movement.runLeft(sprite1);
   }else{
     sprite1.animations.stop();
   }
@@ -179,11 +194,11 @@ var controls = function(){
     sprite1.body.velocity.y = -400;
   }
   if(sprite1.body.velocity.y < 0){
-    Character.movement.jump();
+    Character.movement.jump(sprite1);
   }else if(sprite1.body.velocity.y > 0){
-    Character.movement.fall();
+    Character.movement.fall(sprite1);
   }
   if(attackkey.isDown){
-    Character.movement.attack();
+    Character.movement.attack(sprite1);
   }
 };
