@@ -6,6 +6,7 @@ function preload(){
   game.load.spritesheet('hero', 'images/YeOldyNecroGuy.png', 16, 15, 24, 18, 5.8);
   game.load.spritesheet('hero2', 'images/YeOldyNecroGuy2.png', 16, 15, 24, 18, 5.8);
   game.load.spritesheet('fire', 'images/rsz_fireballs_transparent.png', 30, 16, -1, 0, 0);
+  game.load.spritesheet('fire2', 'images/rsz_fireballs_transparent2.png', 30, 16, -1, 0, 0);
   game.load.image('platform', 'images/winter_ground/ground2.png');
   game.load.image('floatplatform', 'images/winter_ground/ground0.png');
   game.load.image('wallLeft', 'images/winter_ground/ground4.png');
@@ -33,6 +34,7 @@ function update(){
 
   game.physics.arcade.collide(sprite1, platforms);
   game.physics.arcade.collide(sprite2, platforms);
+  game.physics.arcade.collide(sprite1, sprite2);
   game.physics.arcade.collide(platforms, fireballs);
 
   controls();
@@ -89,7 +91,11 @@ var Character = {
       sprite.animations.play('down');
     },
     attack: function(sprite){
-      Fireballs.create();
+      if (sprite === sprite1){
+        Fireballs.create();
+      }else if(sprite === sprite2){
+        Fireballs.create2();
+      }
     }
   }
 };
@@ -103,6 +109,17 @@ var Fireballs = {
       fireball.body.velocity.x = -400;
     } else{
       fireball = fireballs.create(sprite1.body.x + sprite1.body.width / 2 + 10, sprite1.body.y + sprite1.body.height / 2, 'fire');
+      fireball.body.velocity.x = 400;
+    }
+  },
+  create2: function(){
+    var fireball;
+    if (sprite2.flipped === true){
+      fireball = fireballs.create(sprite2.body.x + sprite2.body.width / 2 - 20, sprite2.body.y + sprite2.body.height / 2, 'fire2');
+      fireball.scale.x *= -1;
+      fireball.body.velocity.x = -400;
+    } else{
+      fireball = fireballs.create(sprite2.body.x + sprite2.body.width / 2 + 10, sprite2.body.y + sprite2.body.height / 2, 'fire2');
       fireball.body.velocity.x = 400;
     }
   },
@@ -180,8 +197,8 @@ var controls = function(){
     left: game.input.keyboard.addKey(Phaser.Keyboard.A),
     right: game.input.keyboard.addKey(Phaser.Keyboard.D),
     down: game.input.keyboard.addKey(Phaser.Keyboard.S)
-  }
-  var attackkey2 = game.input.keyboard.addKey(Phaser.Keyboard.TAB)
+  };
+  var attackkey2 = game.input.keyboard.addKey(Phaser.Keyboard.TAB);
 
   sprite1.anchor.setTo(0.5,0.5);
   sprite1.body.velocity.x = 0;
@@ -227,7 +244,7 @@ var controls = function(){
   }else if(sprite2.body.velocity.y > 0){
     Character.movement.fall(sprite2);
   }
-  if(attackkey.isDown){
+  if(attackkey2.isDown){
     Character.movement.attack(sprite2);
   }
 };
