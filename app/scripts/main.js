@@ -91,35 +91,26 @@ var Character = {
       sprite.animations.play('down');
     },
     attack: function(sprite){
-      if (sprite === sprite1){
-        Fireballs.create();
-      }else if(sprite === sprite2){
-        Fireballs.create2();
-      }
+      Fireballs.create(sprite);
     }
   }
 };
 
 var Fireballs = {
-  create: function(){
-    var fireball;
-    if (sprite1.flipped === true){
-      fireball = fireballs.create(sprite1.body.x + sprite1.body.width / 2 - 20, sprite1.body.y + sprite1.body.height / 2, 'fire');
-      fireball.scale.x *= -1;
-      fireball.body.velocity.x = -400;
-    } else{
-      fireball = fireballs.create(sprite1.body.x + sprite1.body.width / 2 + 10, sprite1.body.y + sprite1.body.height / 2, 'fire');
-      fireball.body.velocity.x = 400;
+  create: function(sprite){
+    var fireball, color;
+
+    if (sprite === sprite1){
+      color = 'fire';
+    }else if(sprite === sprite2){
+      color = 'fire2';
     }
-  },
-  create2: function(){
-    var fireball;
-    if (sprite2.flipped === true){
-      fireball = fireballs.create(sprite2.body.x + sprite2.body.width / 2 - 20, sprite2.body.y + sprite2.body.height / 2, 'fire2');
+    if (sprite.flipped === true){
+      fireball = fireballs.create(sprite.body.x + sprite.body.width / 2 - 20, sprite.body.y + sprite.body.height / 2-5, color);
       fireball.scale.x *= -1;
       fireball.body.velocity.x = -400;
     } else{
-      fireball = fireballs.create(sprite2.body.x + sprite2.body.width / 2 + 10, sprite2.body.y + sprite2.body.height / 2, 'fire2');
+      fireball = fireballs.create(sprite.body.x + sprite.body.width / 2 + 10, sprite.body.y + sprite.body.height / 2-5, color);
       fireball.body.velocity.x = 400;
     }
   },
@@ -171,19 +162,19 @@ var World = {
     leftFloat = game.add.tileSprite(-15,game.world.height/1.5,128,20,'floatplatform');
     platforms.add(leftFloat);
 
-    leftCenterFloat = game.add.tileSprite(150,game.world.height/2,128,20,'floatplatform');
+    leftCenterFloat = game.add.tileSprite(150,game.world.height/2.2,128,20,'floatplatform');
     platforms.add(leftCenterFloat);
 
-    leftUpperFloat = game.add.tileSprite(-15,game.world.height/3,128,20,'floatplatform');
+    leftUpperFloat = game.add.tileSprite(-15,game.world.height/4,128,20,'floatplatform');
     platforms.add(leftUpperFloat);
 
     rightFloat = game.add.tileSprite(game.world.width - 128,game.world.height/1.5,128,20,'floatplatform');
     platforms.add(rightFloat);
 
-    rightCenterFloat = game.add.tileSprite(game.world.width - 278,game.world.height/2,128,20,'floatplatform');
+    rightCenterFloat = game.add.tileSprite(game.world.width - 278,game.world.height/2.2,128,20,'floatplatform');
     platforms.add(rightCenterFloat);
 
-    rightUpperFloat = game.add.tileSprite(game.world.width - 128,game.world.height/3,128,20,'floatplatform');
+    rightUpperFloat = game.add.tileSprite(game.world.width - 128,game.world.height/4,128,20,'floatplatform');
     platforms.add(rightUpperFloat);
   }
 };
