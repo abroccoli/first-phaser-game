@@ -93,7 +93,7 @@ var Character = {
 };
 
 var controls = function(){
-  sprite1.anchor.setTo(.5,.5);
+  sprite1.anchor.setTo(0.5,0.5);
   sprite1.body.velocity.x = 0;
 
   if (cursors.right.isDown){
