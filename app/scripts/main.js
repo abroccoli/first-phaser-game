@@ -52,6 +52,7 @@ var Character = {
     sprite1.animations.add('up', [7], 10, true);
     sprite1.animations.add('down', [9], 10, true);
     sprite1.animations.add('attack', [12], 10, true);
+    sprite1.animations.add('death', [4], 10, true);
     sprite1.flipped = false;
 
     sprite2 = game.add.sprite(900, 530, 'hero2');
@@ -63,7 +64,14 @@ var Character = {
     sprite2.animations.add('up', [7], 10, true);
     sprite2.animations.add('down', [9], 10, true);
     sprite2.animations.add('attack', [12], 10, true);
+    sprite2.animations.add('death', [4], 10, true);
     sprite2.flipped = false;
+  },
+
+  kill: function(sprite){
+    console.log('hit');
+    // sprite.animations.play('death');
+    // sprite.kill();
   },
 
   movement: {
@@ -123,6 +131,8 @@ var Fireballs = {
         if (fireballs.children[i].body.velocity.x === 0){
           fireballs.children[i].destroy();
         }
+        game.physics.arcade.collide(fireballs.children[i], sprite1, Character.kill,null, this);
+        game.physics.arcade.collide(fireballs.children[i], sprite2, Character.kill,null, this);
       }
     }
   }
